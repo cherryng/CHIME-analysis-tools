@@ -27,9 +27,17 @@ ax = fig.add_subplot(1, 1, 1)
 yoffs = np.arange(-2,2,0.01) #Range of offsets in deg
 beamshape = np.zeros(len(yoffs))
 
-#CHIME beam
-FWHM = beam_fwhm(256, 0.3, 600)
-print(f'Freq=600MHz  FWHM={FWHM:2}')
+#CHIME synthesized beam
+Freq = 600
+FWHM = beam_fwhm(256, 0.3, Freq)
+
+#MeerKAT primary beam at L-band, uses dish diameter as D
+#Freq = 1284
+#FWHM = ((SPEED_OF_LIGHT / (freq. * 1.e6)) / 13.5) *R2D
+#MeerKAT coherent formed beam, uses core array diameter as D
+#FWHM = ((SPEED_OF_LIGHT / (freq. * 1.e6)) / 1000.) *R2D
+
+print(f'Freq={Freq:2}MHz  FWHM={FWHM:2}')
 for y in range(len(yoffs)):
     beamshape[y] = sincsq(yoffs[y],FWHM)
 ax.plot(yoffs,beamshape,label='chime zenith beam in NS',c="k")
